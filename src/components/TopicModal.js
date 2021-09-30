@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Modal, Typography, Box,  makeStyles } from "@material-ui/core";
+import { TextField, Button, Modal, Box,  makeStyles } from "@material-ui/core";
 import { useSelector, useDispatch } from 'react-redux';
 import uuid from 'react-uuid';
 
@@ -49,7 +49,7 @@ export default function TopicModal ({ topicName, topicId, noteList, updateTopic,
     setOpen(true);
   };
   const handleClose = () => {
-    dispatch({ type: SUBJECT_TYPES.CLEAR_TOPIC_STATE, payload: null });
+    dispatch({ type: SUBJECT_TYPES.CLEAR_NOTE_STATE, payload: null });
     setOpen(false);
   }
 

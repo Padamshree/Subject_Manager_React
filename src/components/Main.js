@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Card, TextField } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import Select from 'react-select';
 import uuid from 'react-uuid';
@@ -28,7 +28,7 @@ export default function Main() {
 
   useEffect(() => {
     dispatch(getSubjectList());
-  }, []);
+  }, [dispatch]);
 
   const addSubjectHandler = () => {
     dispatch(addSubjectToList(currentSubject));

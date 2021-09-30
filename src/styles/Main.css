@@ -21,7 +21,6 @@
 
 .cards-container {
     margin: 0 auto;
-    margin-top: 50px;
     width: 50%;
     display: flex;
     flex-wrap: wrap;
@@ -41,3 +40,39 @@
     margin: 10px 20px;
     width: 150px;
 }
+
+.topic-container {
+    margin: 0 auto;
+    margin-top: 100px;
+    width: 80%;
+    display: flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topics-list {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-topic {
+    width: 200px;
+}
+
+.topic-card {
+    padding-top: 8px;
+    width: 180px;
+    height: 120px;
+    margin: 16px 16px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.5);
+    border-radius: 8px;
+    box-shadow: turquoise;
+}
+/* 
+.act-btn {
+    margin: 10px 10px;
+} */

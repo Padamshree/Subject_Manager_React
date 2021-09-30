@@ -1,0 +1,10 @@
+.add-modal-note {
+    display: flex;
+    align-items: center;
+}
+
+.note-div {
+    display: flex;
+    align-items: center;
+    margin: 30px 0px;
+}

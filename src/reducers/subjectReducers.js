@@ -14,8 +14,9 @@ const initialState = {
     },
     currentNote: {
         noteId: '',
-        note: '',  
+        note: '',
     },
+    updateState: false,
 }
 
 export default function subjectReducer (state = initialState, action) {
@@ -59,6 +60,11 @@ export default function subjectReducer (state = initialState, action) {
                     ...action.payload,
                 },
             };
+        case SUBJECT_TYPES.UPDATE_STATE:
+            return {
+                ...state,
+                updateState: action.payload,
+            }
         case SUBJECT_TYPES.CLEAR_NOTE_STATE:
             return {
                 ...state,

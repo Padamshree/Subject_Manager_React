@@ -4,20 +4,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import Select from 'react-select';
 import uuid from 'react-uuid';
 
-import SubjectCard from './SubjectCards';
 import TopicModal from './TopicModal';
-import Test from './Test';
 
 import { getSubjectList, 
   setSubject,
   addSubjectToList,
   setTopic,
-  setSubjectList,
   updateSubjectInList,
   removeSubjectInList,
 } from '../actions/subjectActions';
 
 import '../styles/Main.css';
+import { SUBJECT_TYPES } from '../actions/subject.types';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -51,13 +49,30 @@ export default function Main() {
       topicName: currentTopic.topicName,
       noteList: [],
     }
- 
     const currentList = [ ...topicsList, addTopic ];
     const newSub = {
       ...currentSubject,
       topicsList: currentList,
     }
-    dispatch(updateSubjectInList(newSub));
+    dispatch(setSubject(newSub));
+    dispatch({ type: SUBJECT_TYPES.CLEAR_TOPIC_STATE, payload: null });
+  }
+
+  const updateTopic = () => {
+    const updatedTopicsList = [];
+    currentSubject.topicsList.forEach((topic) => {
+      if (topic.topicId !== currentTopic.topicId) {
+        updatedTopicsList.push(topic);
+      } else {
+        updatedTopicsList.push(currentTopic);
+      }
+    })
+    dispatch(setSubject({ ...currentSubject, topicsList: updatedTopicsList }));
+  }
+
+  const deleteTopic = (topicId) => {
+    const updatedTopicsList = currentSubject.topicsList.filter((topic) => topic.topicId !== topicId);
+    dispatch(setSubject({ ...currentSubject, topicsList: updatedTopicsList }));
   }
   
 
@@ -75,30 +90,6 @@ export default function Main() {
         />
         <br />
         {
-          currentSubject.subjectId && 
-            <div>
-              <Button
-                className='add-subject-action'
-                variant='outlined'
-                color='inherit'
-                size='small'
-                onClick={editSubjectHandler}
-              >
-                Edit
-              </Button>
-              <br />
-              <Button
-                className='add-subject-action'
-                variant='outlined'
-                color='inherit'
-                size='small'
-                onClick={deleteSubjectHandler}
-              >
-                Delete
-              </Button>
-            </div>
-        }
-        {
           !currentSubject.subjectId && 
           <Button
             className='add-subject-action'
@@ -113,30 +104,30 @@ export default function Main() {
       </div>
       <br />
       <div style={{ width: '200px' }}>
-        <Select
-          placeholder="Select Subject"
-          isMulti={false}
-          isSearchable
-          value = { currentSubject.subjectId ? { value: currentSubject.subjectName, label: currentSubject.subjectName } : '' }
-          options={(subjectList && subjectList.length
-          && subjectList.map((item) => ({ value: item.subjectId, label: item.subjectName })))}
-          onChange={(option, _action) => {
-            console.log(option);
-            const selectedOption = subjectList.find((subject) => subject.subjectId === option.value);
-            console.log(selectedOption);
-            dispatch(setSubject(selectedOption));
+        { subjectList && subjectList.length > 0 &&
+          <Select
+            placeholder="Select Subject"
+            isMulti={false}
+            isSearchable
+            value = { currentSubject.subjectId ? { value: currentSubject.subjectName, label: currentSubject.subjectName } : '' }
+            options={(subjectList && subjectList.length
+            && subjectList.map((item) => ({ value: item.subjectId, label: item.subjectName })))}
+            onChange={(option, _action) => {
+              const selectedOption = subjectList.find((subject) => subject.subjectId === option.value);
+              dispatch(setSubject(selectedOption));
+              }
             }
-          }
-        />
+          />
+        }
       </div>
       <div className="cards-container">
         <div>
           {
-            currentSubject.subjectName && 
-            <div style={{ width: '300px' }}>
-              <div className="add-subject-container">
+            currentSubject.subjectId && 
+            <div>
+              <div className="topic-container">
                 <TextField
-                  className='add-subject-action'
+                  className='add-topic'
                   placeholder="Topic"
                   value={currentTopic.topicName || ''}
                   onChange={(e) => {
@@ -144,8 +135,8 @@ export default function Main() {
                       dispatch(setTopic(newItem));
                     }}
                 />
+                <br />
                 <Button
-                  className='add-subject-action'
                   variant='outlined'
                   color='inherit'
                   size='small'
@@ -155,14 +146,16 @@ export default function Main() {
                 </Button>
               </div>
               <br />
-              <div>
+              <div className='topics-list'>
                 {
                   currentSubject.topicsList && currentSubject.topicsList.length ? (
                     currentSubject.topicsList.map((topic) => (
-                      <div key={topic.topicId} style={{ width: '200px' }}>
+                      <div key={topic.topicId} className='topic-card'>
                         {topic.topicName}
                         <TopicModal
                           {...topic}
+                          updateTopic={updateTopic}
+                          deleteTopic={deleteTopic}
                         />
                       </div>
                     ))
@@ -177,6 +170,43 @@ export default function Main() {
           }
         </div>
       </div>
+      {
+          currentSubject.subjectId && 
+            <div>
+              <br />
+              <Button
+                className='delete-btn act-btn'
+                variant='contained'
+                color='secondary'
+                size='small'
+                style={{ margin: '0.5rem 0.5rem' }}
+                onClick={deleteSubjectHandler}
+              >
+                Delete Subject
+              </Button>
+              <br />
+              <Button
+                className='save-btn act-btn'
+                variant='contained'
+                color='primary'
+                size='small'
+                style={{ margin: '0.5rem 0.5rem' }}
+                onClick={editSubjectHandler}
+              >
+                Save Changes
+              </Button>
+              <br />
+              <Button
+                className='add-new-btn act-btn'
+                variant='outlined'
+                color='inherit'
+                style={{ margin: '0.5rem 0.5rem' }}
+                onClick={() => dispatch({ type: SUBJECT_TYPES.CLEAR_SUBJECT_STATE, payload: null })}
+              >
+                Add New Subject
+              </Button>
+            </div>
+        }
     </div>
   )
     

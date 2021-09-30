@@ -3,7 +3,6 @@ import { db } from "../firebase";
 import firebase from 'firebase';
 
 export const setSubject = (payload) => (dispatch) => {
-    console.log(payload);
     dispatch({
         type: SUBJECT_TYPES.SET_SUBJECT,
         payload: payload,
@@ -36,7 +35,7 @@ export const getSubjectList = () => (dispatch) => {
     });
     db.collection('subjects').orderBy('createdAt', 'desc').get()
     .then((data) => {
-        let subList = [];
+        const subList = [];
         data.forEach((doc) => {
             subList.push({
                 subjectId: doc.id,
@@ -44,12 +43,9 @@ export const getSubjectList = () => (dispatch) => {
                 topicsList: doc.data().topicsList,
             });
         });
-        console.log(subList);
         dispatch(setSubjectList(subList));
     })
-    .catch((err) => {
-        console.log(err);
-    });
+    .catch(() => {});
 };
 
 export const addSubjectToList = (subject) => (dispatch) => { 
@@ -66,14 +62,11 @@ export const addSubjectToList = (subject) => (dispatch) => {
             dispatch(getSubjectList());
         }
     })
-    .catch((err) => {
-        console.log(err);
-    });
+    .catch(() => {});
 };
 
 export const updateSubjectInList = (subject) => (dispatch) => {
     const { subjectName, subjectId, topicsList } = subject;
-
     db
     .collection('subjects')
     .doc(subjectId)
@@ -84,9 +77,7 @@ export const updateSubjectInList = (subject) => (dispatch) => {
     .then(() => {
         dispatch(getSubjectList());
     })
-    .catch((err) => {
-        console.log(err);
-    });
+    .catch(() => {});
 }
 
 export const removeSubjectInList = (subject) => (dispatch) => {
@@ -99,7 +90,5 @@ export const removeSubjectInList = (subject) => (dispatch) => {
     .then(() => {
         dispatch(getSubjectList());
     })
-    .catch((err) => {
-        console.log(err);
-    });
+    .catch(() => {});
 }

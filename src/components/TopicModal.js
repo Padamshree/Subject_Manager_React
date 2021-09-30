@@ -50,6 +50,7 @@ export default function TopicModal ({ topicName, topicId, noteList, updateTopic,
   };
   const handleClose = () => {
     dispatch({ type: SUBJECT_TYPES.CLEAR_NOTE_STATE, payload: null });
+    dispatch({ type: SUBJECT_TYPES.UPDATE_STATE, payload: false });
     setOpen(false);
   }
 

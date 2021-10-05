@@ -1,3 +1,10 @@
+Visitez here ----> https://subject-manager-app.herokuapp.com/
+
+Some sort of Nested Todo List.
+
+To run (Budhha bless you if you do): - clone, cd into dir and run npm install --> In root dir of repo add .env file with firestore/firebase app secrets --> Run npm run start.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
